@@ -1,0 +1,34 @@
+---
+title: "YOUR FILE NAME HERE"
+author: "YOUR NAME HERE"
+format: gfm
+---
+
+```{r, setup}
+knitr::opts_chunk$set(echo=TRUE)
+library(mdsr)
+library(tidyverse)
+#  tidy=FALSE,     # display code as typed
+#  size="small")   # slightly smaller font for code
+```
+
+## Recreate this plot!
+
+I will show a plot on the google slides. This plot was created using the data verbs in class. Working with your partner, see if you can construct a series of pipes to recreate the plot. Here is some code to get you started:
+
+```{r}
+# Location of the excel file:
+url <- 'https://github.com/jmzobitz/DST490Datasets/raw/main/Unemployment.xlsx'
+
+# Name of the file to save:
+destfile <- "Unemployment.xlsx"
+
+# Download
+curl::curl_download(url, destfile)
+input_data <- readxl::read_excel(destfile,
+                                        skip = 4,
+                                        sheet = 'UnemploymentMedianIncome')
+
+glimpse(input_data)
+
+```
