@@ -148,3 +148,20 @@ glimpse(input_data)
     $ Unemployment_rate_2022                    <dbl> 3.7, 2.6, 2.3, 2.4, 4.1, 2.5…
     $ Median_Household_Income_2021              <dbl> 69717, 53990, 66444, 65658, …
     $ Med_HH_Income_Percent_of_State_Total_2021 <dbl> NA, 100.0, 123.1, 121.6, 71.…
+
+Now here is the cool data viz I made:
+
+``` r
+input_data |>
+  filter(Area_Name == "Hennepin County, MN") |>
+  select(-c("FIPS_Code":"Metro_2013")) |>
+  pivot_longer(cols=everything()) |>
+  mutate(Year = as.numeric(str_extract(name,pattern="[:digit:]{4}$")),
+         variable = str_extract(name,pattern="[^[:digit:]]+")) |> select(-name) |>
+  pivot_wider(names_from="variable",values_from="value") |>
+  ggplot(aes(x=Year,y=Unemployment_rate_)) +
+  geom_point() + geom_line() +
+  ggtitle("Unemployment rate trends in Hennepin County, MN")
+```
+
+![](day3-wrangling_files/figure-commonmark/unnamed-chunk-2-1.png)

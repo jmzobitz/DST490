@@ -32,3 +32,21 @@ input_data <- readxl::read_excel(destfile,
 glimpse(input_data)
 
 ```
+
+
+Now here is the cool data viz I made:
+
+```{r}
+input_data |>
+  filter(Area_Name == "Hennepin County, MN") |>
+  select(-c("FIPS_Code":"Metro_2013")) |>
+  pivot_longer(cols=everything()) |>
+  mutate(Year = as.numeric(str_extract(name,pattern="[:digit:]{4}$")),
+         variable = str_extract(name,pattern="[^[:digit:]]+")) |> select(-name) |>
+  pivot_wider(names_from="variable",values_from="value") |>
+  ggplot(aes(x=Year,y=Unemployment_rate_)) +
+  geom_point() + geom_line() +
+  ggtitle("Unemployment rate trends in Hennepin County, MN")
+
+
+```
